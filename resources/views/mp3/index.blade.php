@@ -28,7 +28,7 @@
 
         <template x-if="filtered.length === 0">
             <p class="text-center text-gray-500 italic">
-                {{ __('Nav atrastu MP3 failu.') }}
+                {{ __('Nekas netika atrasts.') }}
             </p>
         </template>
 
