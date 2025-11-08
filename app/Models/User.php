@@ -45,4 +45,34 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function permissions()
+    {
+        return $this->belongsToMany(Permission::class);
+    }
+
+    public function hasPermission($permission)
+    {
+        if ($this->admin) {
+            return true;
+        }
+
+        return $this->permissions->contains('name', $permission);
+    }
+
+    public function givePermission($permissionName)
+    {
+        $permission = Permission::where('name', $permissionName)->first();
+        if ($permission && !$this->hasPermission($permissionName)) {
+            $this->permissions()->attach($permission->id);
+        }
+    }
+
+    public function revokePermission($permissionName)
+    {
+        $permission = Permission::where('name', $permissionName)->first();
+        if ($permission) {
+            $this->permissions()->detach($permission->id);
+        }
+    }
 }

@@ -43,12 +43,12 @@
                         x-bind:class="{ 'opacity-50 cursor-not-allowed': submitting }"
                         class="relative p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300"
                     >
-                        <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-transparent flex items-center justify-center">
+                        <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-transparent flex items-center justify-center min-w-[100px]">
                             <span x-show="!submitting">{{ __('Saglabāt') }}</span>
 
                             <svg 
                                 x-show="submitting"
-                                class="animate-spin h-5 w-5 text-purple-600 dark:text-purple-400"
+                                class="animate-spin h-5 w-5"
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
                                 viewBox="0 0 24 24"

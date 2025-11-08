@@ -17,23 +17,37 @@
                     </x-nav-link>
                 </div>
 
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('pieturas.index')" :active="request()->routeIs('pieturas')">
-                        {{ __('Pieturas') }}
-                    </x-nav-link>
-                </div>
+                @if (auth()->user()->hasPermission('izveidot_pieturas'))
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link :href="route('pieturas.index')" :active="request()->routeIs('pieturas')">
+                            {{ __('Pieturas') }}
+                        </x-nav-link>
+                    </div>
+                @endif
 
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('vestures.index')" :active="request()->routeIs('vestures')">
-                        {{ __('Vēsture') }}
-                    </x-nav-link>
-                </div>
+                @if (auth()->user()->hasPermission('izveidot_pieturas'))
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link :href="route('vestures.index')" :active="request()->routeIs('vestures')">
+                            {{ __('Vēsture') }}
+                        </x-nav-link>
+                    </div>
+                @endif
 
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('mp3.index')" :active="request()->routeIs('mp3')">
-                        {{ __('MP3') }}
-                    </x-nav-link>
-                </div>
+                @if (auth()->user()->hasPermission('izveidot_pieturas'))
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link :href="route('mp3.index')" :active="request()->routeIs('mp3')">
+                            {{ __('MP3') }}
+                        </x-nav-link>
+                    </div>
+                @endif
+
+                @if (auth()->check() && auth()->user()->admin)
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link :href="route('users.index')" :active="request()->routeIs('lietotaji')">
+                            {{ __('Lietotāji') }}
+                        </x-nav-link>
+                    </div>
+                @endif
             </div>
 
             <!-- Settings Dropdown -->
@@ -89,17 +103,29 @@
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
 
-            <x-responsive-nav-link :href="route('pieturas.index')" :active="request()->routeIs('pieturas')">
-                {{ __('Pieturas') }}
-            </x-responsive-nav-link>
+            @if (auth()->user()->hasPermission('izveidot_pieturas'))
+                <x-responsive-nav-link :href="route('pieturas.index')" :active="request()->routeIs('pieturas')">
+                    {{ __('Pieturas') }}
+                </x-responsive-nav-link>
+            @endif
 
-            <x-responsive-nav-link :href="route('vestures.index')" :active="request()->routeIs('vestures')">
-                {{ __('Vēsture') }}
-            </x-responsive-nav-link>
+            @if (auth()->user()->hasPermission('izveidot_pieturas'))
+                <x-responsive-nav-link :href="route('vestures.index')" :active="request()->routeIs('vestures')">
+                    {{ __('Vēsture') }}
+                </x-responsive-nav-link>
+            @endif
 
-            <x-responsive-nav-link :href="route('mp3.index')" :active="request()->routeIs('mp3')">
-                {{ __('MP3') }}
-            </x-responsive-nav-link>
+            @if (auth()->user()->hasPermission('izveidot_pieturas'))
+                <x-responsive-nav-link :href="route('mp3.index')" :active="request()->routeIs('mp3')">
+                    {{ __('MP3') }}
+                </x-responsive-nav-link>
+            @endif
+
+            @if (auth()->check() && auth()->user()->admin)
+                <x-responsive-nav-link :href="route('users.index')" :active="request()->routeIs('users')">
+                    {{ __('Lietotāji') }}
+                </x-responsive-nav-link>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->
