@@ -9,9 +9,13 @@ class PieturasController extends Controller
 {
     public function index()
     {
-        $pieturas = Pieturas::orderByDesc('created_at')->get();
+        $user = auth()->user();
+        $user_id = $user->id;
+        $admin = $user->admin;
 
-        return view('pieturas.index', compact('pieturas'));
+        $pieturas = Pieturas::orderByDesc('created_at')->get();
+        
+        return view('pieturas.index', compact('pieturas', 'user_id', 'admin'));
     }
 
     public function show($id)
@@ -20,7 +24,9 @@ class PieturasController extends Controller
             $query->orderByDesc('time');
         }])->findOrFail($id);
 
-        $pietura = Pieturas::findOrFail($id);
+        $pietura = Pieturas::with(['vestures' => function ($query) {
+            $query->orderByDesc('time');
+        }])->findOrFail($id);
         
         return view('pieturas.show', compact('pietura', 'mp3'));
     }
@@ -42,6 +48,8 @@ class PieturasController extends Controller
             'text.max' => __('Teksts nedrīkst pārsniegt 255 rakstzīmes!'),
             'text.regex' => __('Teksts nedrīkst saturēt ciparus!'),
         ]);
+
+        $data['user_id'] = auth()->id();
 
         Pieturas::create($data);
 

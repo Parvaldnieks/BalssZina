@@ -19,6 +19,6 @@ class Vesture extends Model
 
     public function pietura()
     {
-        return $this->belongsTo(Pieturas::class);
+        return $this->belongsTo(Pieturas::class, 'pieturas_id');
     }
 }

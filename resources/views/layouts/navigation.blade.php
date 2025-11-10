@@ -17,7 +17,7 @@
                     </x-nav-link>
                 </div>
 
-                @if (auth()->user()->hasPermission('izveidot_pieturas'))
+                @if (auth()->user()->hasPermission('skatit_pieturas'))
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                         <x-nav-link :href="route('pieturas.index')" :active="request()->routeIs('pieturas')">
                             {{ __('Pieturas') }}
@@ -33,7 +33,7 @@
                     </div>
                 @endif
 
-                @if (auth()->user()->hasPermission('izveidot_pieturas'))
+                @if (auth()->user()->hasPermission('skatit_pieturas'))
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                         <x-nav-link :href="route('mp3.index')" :active="request()->routeIs('mp3')">
                             {{ __('MP3') }}

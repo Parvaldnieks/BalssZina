@@ -5,5 +5,5 @@
         </h2>
     </x-slot>
 
-    <x-vestures-list :vestures="$vestures" />
+    <x-tables.vestures-table :vestures="$vestures" />
 </x-app-layout>

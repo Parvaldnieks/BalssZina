@@ -22,17 +22,17 @@ Route::middleware('auth')->group(function () {
 });
 
 // Mp3
-Route::resource('mp3', Mp3Controller::class)->middleware('permission:izveidot_pieturas');
+Route::resource('mp3', Mp3Controller::class)->middleware('permission:skatit_pieturas');
 Route::get('/download/{id}', [Mp3Controller::class, 'download'])->name('mp3.download');
 Route::post('/mp3/sync', [Mp3Controller::class, 'start'])->name('mp3.sync');
 
 // Pieturas routes
 Route::resource('pieturas', PieturasController::class)
-    ->middleware('permission:izveidot_pieturas');
+    ->middleware('permission:skatit_pieturas');
 
 // Vestures routes
 Route::resource('vestures', VesturesController::class)
-    ->middleware('permission:izveidot_pieturas');
+    ->middleware('permission:skatit_pieturas');
 
 // Adminstrators
 Route::middleware('admin')->group(function () {

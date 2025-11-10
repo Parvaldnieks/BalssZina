@@ -12,6 +12,7 @@ class Pieturas extends Model
     protected $fillable = [
         'name',
         'text',
+        'user_id',
     ];
 
     protected $appends = ['latest_mp3_path', 'latest_mp3_url'];
@@ -19,6 +20,11 @@ class Pieturas extends Model
     public function vestures()
     {
         return $this->hasMany(Vesture::class, 'pieturas_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
     protected static function boot()

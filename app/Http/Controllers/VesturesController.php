@@ -11,7 +11,18 @@ class VesturesController extends Controller
 {
     public function index()
     {
-        $vestures = vesture::orderByDesc('created_at')->get();
+        $user = auth()->user();
+        $user_id = $user->id;
+
+        if ($user->admin) {
+            $vestures = Vesture::orderByDesc('created_at')->get();
+        } else {
+            $vestures = Vesture::whereHas('pietura', function ($query) use ($user_id) {
+            $query->where('user_id', $user_id);
+            })
+            ->orderByDesc('created_at')
+            ->get();
+        }
 
         return view('vestures.index', compact('vestures'));
     }

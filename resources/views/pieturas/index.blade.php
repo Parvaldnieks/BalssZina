@@ -16,5 +16,5 @@
         </div>
     @endif
 
-    <x-pieturas-list :pieturas="$pieturas" />
+    <x-tables.pieturas-table :pieturas="$pieturas" :user="$user_id" :admin="$admin"/>
 </x-app-layout>

@@ -12,7 +12,8 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::all();
+        $users = User::orderByDesc('created_at')->get();
+        
         return view('users.index', compact('users'));
     }
 

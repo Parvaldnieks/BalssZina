@@ -14,11 +14,8 @@ class PermissionSeeder extends Seeder
     public function run(): void
     {
         $permissions = [
+            'skatit_pieturas',
             'izveidot_pieturas',
-            // 'dzest_pieturas',
-            // 'rediget_pieturas',
-            // 'dzest_vestures',
-            // 'rediget_vestures',
         ];
 
         foreach ($permissions as $permission) {

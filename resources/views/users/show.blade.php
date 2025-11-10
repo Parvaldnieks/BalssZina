@@ -1,14 +1,19 @@
 <x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl">
+            {{ __('Lietotāja Informācija') }}
+        </h2>
+    </x-slot>
+
     <div class="max-w-md mx-auto mt-10">
-        <h1 class="text-2xl font-bold mb-4">User Info</h1>
 
         <div class="bg-white shadow p-4 rounded">
             <p><strong>ID:</strong> {{ $user->id }}</p>
-            <p><strong>Name:</strong> {{ $user->name }}</p>
-            <p><strong>Email:</strong> {{ $user->email }}</p>
-            <p><strong>Admin:</strong> {{ $user->admin ? 'Yes' : 'No' }}</p>
-            <p><strong>Created:</strong> {{ $user->created_at }}</p>
-            <p><strong>Updated:</strong> {{ $user->updated_at }}</p>
+            <p><strong>Vārds:</strong> {{ $user->name }}</p>
+            <p><strong>E-pasts:</strong> {{ $user->email }}</p>
+            <p><strong>Administrators:</strong> {{ $user->admin ? 'Jā' : 'Nē' }}</p>
+            <p><strong>Kad izveidots:</strong> {{ $user->created_at }}</p>
+            <p><strong>Kad atjaunots:</strong> {{ $user->updated_at }}</p>
 
 
             <div class="flex justify-between mt-4 flex space-x-2">

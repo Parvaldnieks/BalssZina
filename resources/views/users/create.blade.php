@@ -1,12 +1,17 @@
 <x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl">
+            {{ __('Izveidot Lietotaju') }}
+        </h2>
+    </x-slot>
+
     <div class="max-w-md mx-auto mt-10">
-        <h1 class="text-2xl font-bold mb-4">Izveidot lietotāju</h1>
 
         <form action="{{ route('users.store') }}" method="POST" class="bg-white shadow rounded-lg p-6 space-y-4">
             @csrf
 
             <div>
-                <label class="block font-medium">Name</label>
+                <label class="block font-medium">Vārds</label>
                 <input type="text" name="name" value="{{ old('name') }}" class="border-gray-300 rounded w-full">
                 @error('name')
                     <p class="text-red-500 text-sm">{{ $message }}</p>
@@ -14,7 +19,7 @@
             </div>
 
             <div>
-                <label class="block font-medium">Email</label>
+                <label class="block font-medium">E-pasts</label>
                 <input type="email" name="email" value="{{ old('email') }}" class="border-gray-300 rounded w-full">
                 @error('email')
                     <p class="text-red-500 text-sm">{{ $message }}</p>
@@ -22,7 +27,7 @@
             </div>
 
             <div>
-                <label class="block font-medium">Password</label>
+                <label class="block font-medium">Parole</label>
                 <input type="password" name="password" class="border-gray-300 rounded w-full">
                 @error('password')
                     <p class="text-red-500 text-sm">{{ $message }}</p>

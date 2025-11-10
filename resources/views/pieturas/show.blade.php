@@ -38,54 +38,35 @@
         @if($pietura->vestures && $pietura->vestures->isNotEmpty())
             <h3 class="text-lg font-semibold mb-2 text-gray-800">Vēsture</h3>
             <ul class="list-disc ml-6 space-y-2">
-                @php
-                    $previous = null;
-                @endphp
 
-                    @foreach($pietura->vestures as $vesture)
-                        @if($previous)
-                            @if($vesture->name !== $previous->name)
-                                <li class="text-gray-700 dark:text-gray-300">
-                                    Nosaukums mainīts no 
-                                    <strong>{{ $previous->name }}</strong> 
-                                    uz 
-                                    <strong>{{ $vesture->name }}</strong>
-                                    <span class="text-sm text-gray-500">
-                                        ({{ date('Y-m-d H:i:s', $vesture->time) }})
-                                    </span>
-                                </li>
-                            @endif
-
-                            @if($vesture->text !== $previous->text)
-                                <li class="text-gray-700 dark:text-gray-300">
-                                    Teksts mainīts no 
-                                    <strong>{{ $previous->text }}</strong> 
-                                    uz 
-                                    <strong>{{ $vesture->text }}</strong>
-                                    <span class="text-sm text-gray-500">
-                                        ({{ date('Y-m-d H:i:s', $vesture->time) }})
-                                    </span>
-                                </li>
-                            @endif
-
-                        @else
-                            <li class="text-gray-700 dark:text-gray-300">
-                                Pietura izveidota ar nosaukumu 
-                                <strong>{{ $vesture->name }}</strong> 
-                                un tekstu 
-                                <strong>{{ $vesture->text }}</strong>
-                                <span class="text-sm text-gray-500">
-                                    ({{ date('Y-m-d H:i:s', $vesture->time) }})
-                                </span>
-                            </li>
-                        @endif
-
+                    @foreach($pietura->vestures as $i => $current)
                         @php
-                            $previous = $vesture;
+                            $older = $pietura->vestures[$i + 1] ?? null;
+                            $date  = date('d-m-Y H:i:s', $current->time);
                         @endphp
 
+                        @if($older)
+                            @if($current->name !== $older->name)
+                            <li>
+                                Nosaukums mainīts no <strong>{{ $older->name }}</strong> uz <strong>{{ $current->name }}</strong>
+                                <span class="text-gray-500">({{ $date }})</span>
+                            </li>
+                            @endif
+
+                            @if($current->text !== $older->text)
+                            <li>
+                                Teksts mainīts no <strong>{{ $older->text }}</strong> uz <strong>{{ $current->text }}</strong>
+                                <span class="text-gray-500">({{ $date }})</span>
+                            </li>
+                            @endif
+                        @else
+                            <li>
+                            Pietura izveidota ar nosaukumu <strong>{{ $current->name }}</strong> un tekstu <strong>{{ $current->text }}</strong>
+                            <span class="text-gray-500">({{ $date }})</span>
+                            </li>
+                        @endif
                     @endforeach
-                    @endif
+                @endif
             </ul>
 
         <div class="mt-6">

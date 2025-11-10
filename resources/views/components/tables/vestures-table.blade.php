@@ -1,4 +1,4 @@
-@props(['vestures'])
+@props(['vestures', 'user'])
 
 <div 
     x-data="{ 
