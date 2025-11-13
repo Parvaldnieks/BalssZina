@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
+<nav x-data="{ open: false }" class="bg-white dark:bg-black border-b border-orange-500 dark:border-orange-500">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -13,13 +13,13 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                        {{ __('Sākums') }}
                     </x-nav-link>
                 </div>
 
                 @if (auth()->user()->hasPermission('skatit_pieturas'))
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                        <x-nav-link :href="route('pieturas.index')" :active="request()->routeIs('pieturas')">
+                        <x-nav-link :href="route('pieturas.index')" :active="request()->routeIs('pieturas.index')">
                             {{ __('Pieturas') }}
                         </x-nav-link>
                     </div>
@@ -27,7 +27,7 @@
 
                 @if (auth()->user()->hasPermission('izveidot_pieturas'))
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                        <x-nav-link :href="route('vestures.index')" :active="request()->routeIs('vestures')">
+                        <x-nav-link :href="route('vestures.index')" :active="request()->routeIs('vestures.index')">
                             {{ __('Vēsture') }}
                         </x-nav-link>
                     </div>
@@ -35,7 +35,7 @@
 
                 @if (auth()->user()->hasPermission('skatit_pieturas'))
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                        <x-nav-link :href="route('mp3.index')" :active="request()->routeIs('mp3')">
+                        <x-nav-link :href="route('mp3.index')" :active="request()->routeIs('mp3.index')">
                             {{ __('MP3') }}
                         </x-nav-link>
                     </div>
@@ -43,7 +43,7 @@
 
                 @if (auth()->check() && auth()->user()->admin)
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                        <x-nav-link :href="route('users.index')" :active="request()->routeIs('lietotaji')">
+                        <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
                             {{ __('Lietotāji') }}
                         </x-nav-link>
                     </div>
@@ -52,9 +52,23 @@
 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
+                    <button
+                        id="theme-toggle"
+                        class="mr-2 p-2 rounded-full border border-orange-500 transition ease-in-out duration-150 active:scale-[0.95]"
+                        title="Toggle dark mode"
+                        >
+                        <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden dark:text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m8.66-8.66h1M3 12H2m15.36 6.36l.7.7M6.34 6.34l-.7-.7m12.02 0l.7-.7M6.34 17.66l-.7.7M12 8a4 4 0 100 8 4 4 0 000-8z" />
+                        </svg>
+
+                        <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z" />
+                        </svg>
+                    </button>
+
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
-                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
+                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md dark:text-white bg-white dark:bg-black hover:underline hover:decoration-orange-500 hover:underline-offset-4 focus:outline-none transition ease-in-out duration-150">
                             <div>{{ Auth::user()->name }}</div>
 
                             <div class="ms-1">
@@ -86,7 +100,7 @@
 
             <!-- Hamburger -->
             <div class="-me-2 flex items-center sm:hidden">
-                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out">
+                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-black dark:text-white hover:border hover:border-orange-500 dark:hover:text-white hover:bg-white dark:hover:bg-black dark:hover:border dark:hover:border-orange-500 focus:outline-none focus:bg-white dark:focus:bg-black dark:focus:text-white transition duration-150 ease-in-out">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                         <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />

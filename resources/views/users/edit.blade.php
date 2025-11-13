@@ -1,71 +1,96 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl">
-            {{ __('Rediģēt Lietotaju') }}
-        </h2>
-    </x-slot>
+    <div class="container max-w-[500px] mx-auto p-4">
+        <x-slot name="header">
+            <h2 class="font-semibold text-xl dark:text-white">
+                {{ __('Rediģēt Lietotāju') }}
+            </h2>
+        </x-slot>
 
-    <div class="max-w-lg mx-auto mt-10">
+    
+        <div class="p-[1px] border border-orange-500 dark:border-none dark:bg-gradient-to-br from-black via-orange-500 to-black rounded-lg shadow-sm">
+            <form 
+                action="{{ route('users.update', $user) }}" 
+                method="POST" 
+                class="bg-white dark:bg-black shadow rounded-lg p-6 space-y-4"
+            >
+                @csrf
+                @method('PUT')
 
-        <form action="{{ route('users.update', $user) }}" method="POST" class="bg-white shadow rounded-lg p-6 space-y-4">
-            @csrf
-            @method('PUT')
-
-            <div>
-                <label class="block font-medium">Vārds</label>
-                <input type="text" name="name" value="{{ old('name', $user->name) }}"
-                       class="border-gray-300 rounded w-full">
-                @error('name') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
-            </div>
-
-            <div>
-                <label class="block font-medium">E-pasts</label>
-                <input type="email" name="email" value="{{ old('email', $user->email) }}"
-                       class="border-gray-300 rounded w-full">
-                @error('email') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
-            </div>
-
-            <div>
-                <label class="block font-medium">Parole (var nemainīt)</label>
-                <input type="password" name="password" class="border-gray-300 rounded w-full">
-                @error('password') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
-            </div>
-
-            <div>
-                <label class="inline-flex items-center">
-                    <input type="checkbox" name="admin" class="rounded" {{ $user->admin ? 'checked' : '' }}>
-                    <span class="ml-2">Administrators</span>
-                </label>
-            </div>
-
-            <div class="mt-6">
-                <h2 class="text-lg font-semibold mb-2">Privilēģijas</h2>
-                <div class="bg-white shadow p-4 rounded grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    @foreach ($permissions as $permission)
-                        <label class="inline-flex items-center space-x-2">
-                            <input type="checkbox" name="permissions[]" value="{{ $permission->id }}"
-                                   {{ in_array($permission->id, $userPermissions) ? 'checked' : '' }}
-                                   class="rounded border-gray-300">
-                            <span>{{ $permission->name }}</span>
-                        </label>
-                    @endforeach
+                <div>
+                    <x-input-label for="name" :value="__('Vārds')" />
+                    <x-text-input 
+                        id="name"
+                        name="name"
+                        type="text"
+                        class="mt-1 block w-full"
+                        :value="old('name', $user->name)"
+                    />
+                    <x-input-error :messages="$errors->get('name')" class="mt-2" />
                 </div>
-            </div>
 
-            <div class="flex justify-between mt-6">
-                <a class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300"
-                    href="{{ route('users.index') }}">
-                    <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-transparent">
+                <div>
+                    <x-input-label for="email" :value="__('E-pasts')" />
+                    <x-text-input 
+                        id="email"
+                        name="email"
+                        class="mt-1 block w-full"
+                        :value="old('email', $user->email)"
+                    />
+                    <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                </div>
+
+                <div>
+                    <x-input-label for="password" :value="__('Parole (var nemainīt)')" />
+                    <x-text-input 
+                        id="password"
+                        name="password"
+                        type="password"
+                        class="mt-1 block w-full"
+                        autocomplete="new-password"
+                    />
+                    <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                </div>
+
+                <div>
+                    <label class="inline-flex items-center">
+                        <input 
+                            type="checkbox" 
+                            name="admin" 
+                            class="rounded border-gray-300 text-orange-600 focus:ring-orange-500"
+                            {{ $user->admin ? 'checked' : '' }}
+                        >
+                        <span class="ml-2 dark:text-white">Administrators</span>
+                    </label>
+                </div>
+
+                <div class="mt-6">
+                    <h2 class="text-lg font-semibold mb-2 dark:text-white">{{ __('Privilēģijas') }}</h2>
+                    <div class="bg-white dark:bg-black shadow p-4 rounded grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        @foreach ($permissions as $permission)
+                            <label class="inline-flex items-center space-x-2 dark:text-white">
+                                <input 
+                                    type="checkbox" 
+                                    name="permissions[]" 
+                                    value="{{ $permission->id }}"
+                                    {{ in_array($permission->id, $userPermissions) ? 'checked' : '' }}
+                                    class="rounded border-gray-300 text-orange-600 focus:ring-orange-500"
+                                >
+                                <span>{{ $permission->name }}</span>
+                            </label>
+                        @endforeach
+                    </div>
+                </div>
+
+                <div class="flex justify-between mt-6">
+                    <x-primary-button href="{{ route('users.index') }}">
                         {{ __('Atpakaļ') }}
-                    </span>
-                </a>
+                    </x-primary-button>
 
-                <button type="submit" class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300">
-                    <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-transparent">
+                    <x-primary-button>
                         {{ __('Saglabāt') }}
-                    </span>
-                </button>
-            </div>
-        </form>
+                    </x-primary-button>
+                </div>
+            </form>
+        </div>
     </div>
 </x-app-layout>

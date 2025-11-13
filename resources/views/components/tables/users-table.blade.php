@@ -19,34 +19,34 @@
         type="text" 
         x-model="search"
         placeholder="Meklēt lietotājus..."
-        class="border border-gray-300 rounded px-3 py-2 w-full mb-4 focus:border-blue-500 focus:ring-blue-500"
+        class="rounded px-3 py-2 w-full mb-4 focus:border-orange-500 focus:ring-orange-500"
     >
 
-    <table class="w-full border-collapse text-center">
+    <table class="w-full border-collapse text-center dark:text-white">
         <thead>
-            <tr>
-                <th class="py-3 border-b border-gray-200">ID</th>
-                <th class="border-b border-gray-200">Vārds</th>
-                <th class="border-b border-gray-200">E-pasts</th>
-                <th class="border-b border-gray-200">Administrators</th>
-                <th class="border-b border-gray-200">Darbības</th>
+            <tr class="border-b border-orange-500">
+                <th>ID</th>
+                <th>Vārds</th>
+                <th>E-pasts</th>
+                <th>Administrators</th>
+                <th>Darbības</th>
             </tr>
         </thead>
 
         <tbody>
             <template x-if="filtered.length === 0">
                 <tr>
-                    <td colspan="5" class="text-gray-500 italic text-center py-4">
+                    <td colspan="5" class="text-gray-500 text-center py-4">
                         Nekas netika atrasts.
                     </td>
                 </tr>
             </template>
 
             <template x-for="user in filtered" :key="user.id">
-                <tr>
-                    <td class="px-6 py-4 border-b border-gray-200" x-text="user.id"></td>
+                <tr class="border-b border-orange-500 h-12">
+                    <td x-text="user.id"></td>
                     
-                    <td class="px-6 py-4 border-b border-gray-200">
+                    <td>
                         <a 
                             :href="`/users/${user.id}`"
                             class="text-blue-500 hover:text-blue-700 hover:underline"
@@ -54,11 +54,11 @@
                         ></a>
                     </td>
 
-                    <td class="px-6 py-4 border-b border-gray-200" x-text="user.email"></td>
+                    <td x-text="user.email"></td>
 
-                    <td class="px-6 py-4 border-b border-gray-200" x-text="user.admin ? 'Jā' : 'Nē'"></td>
+                    <td x-text="user.admin ? 'Jā' : 'Nē'"></td>
 
-                    <td class="px-6 py-4 border-b border-gray-200 space-x-3">
+                    <td class="space-x-3">
                         <a 
                             :href="`/users/${user.id}/edit`"
                             class="text-yellow-500 hover:text-yellow-700 hover:underline"

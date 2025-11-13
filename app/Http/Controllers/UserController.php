@@ -12,7 +12,9 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::orderByDesc('created_at')->get();
+        $users = User::where('id', '!=', auth()->id())
+        ->orderByDesc('created_at')
+        ->get();
         
         return view('users.index', compact('users'));
     }

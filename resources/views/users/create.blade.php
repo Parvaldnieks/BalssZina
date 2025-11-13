@@ -1,53 +1,64 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl">
-            {{ __('Izveidot Lietotaju') }}
-        </h2>
-    </x-slot>
+    <div class="container max-w-[500px] mx-auto p-4">
+        <x-slot name="header">
+            <h2 class="font-semibold text-xl dark:text-white">
+                {{ __('Izveidot Lietotāju') }}
+            </h2>
+        </x-slot>
 
-    <div class="max-w-md mx-auto mt-10">
+        <div class="p-[1px] border border-orange-500 dark:border-none dark:bg-gradient-to-br from-black via-orange-500 to-black rounded-lg shadow-sm">
+            <form 
+                action="{{ route('users.store') }}" 
+                method="POST" 
+                class="bg-white dark:bg-black shadow rounded-lg p-6 space-y-4"
+            >
+                @csrf
 
-        <form action="{{ route('users.store') }}" method="POST" class="bg-white shadow rounded-lg p-6 space-y-4">
-            @csrf
+                <div>
+                    <x-input-label for="name" :value="__('Vārds')" />
+                    <x-text-input 
+                        id="name"
+                        name="name"
+                        type="text"
+                        class="mt-1 block w-full"
+                        :value="old('name')"
+                    />
+                    <x-input-error :messages="$errors->get('name')" class="mt-2" />
+                </div>
 
-            <div>
-                <label class="block font-medium">Vārds</label>
-                <input type="text" name="name" value="{{ old('name') }}" class="border-gray-300 rounded w-full">
-                @error('name')
-                    <p class="text-red-500 text-sm">{{ $message }}</p>
-                @enderror
-            </div>
+                <div>
+                    <x-input-label for="email" :value="__('E-pasts')" />
+                    <x-text-input 
+                        id="email"
+                        name="email"
+                        type="email"
+                        class="mt-1 block w-full"
+                        :value="old('email')"
+                    />
+                    <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                </div>
 
-            <div>
-                <label class="block font-medium">E-pasts</label>
-                <input type="email" name="email" value="{{ old('email') }}" class="border-gray-300 rounded w-full">
-                @error('email')
-                    <p class="text-red-500 text-sm">{{ $message }}</p>
-                @enderror
-            </div>
+                <div>
+                    <x-input-label for="password" :value="__('Parole')" />
+                    <x-text-input 
+                        id="password"
+                        name="password"
+                        type="password"
+                        class="mt-1 block w-full"
+                    />
+                    <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                </div>
 
-            <div>
-                <label class="block font-medium">Parole</label>
-                <input type="password" name="password" class="border-gray-300 rounded w-full">
-                @error('password')
-                    <p class="text-red-500 text-sm">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <div class="flex justify-between">
-                <a class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300"
-                    href="{{ route('users.index') }}">
-                    <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-transparent">
+                <div class="flex justify-between mt-6">
+                    <x-primary-button href="{{ route('users.index') }}">
                         {{ __('Atpakaļ') }}
-                    </span>
-                </a>
-                
-                <button type="submit" class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300">
-                    <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-transparent">
-                        {{ __('Izveidot') }}
-                    </span>
-                </button>
-            </div>
-        </form>
+                    </x-primary-button>
+
+                    <x-primary-button>
+                        {{ __('Saglabāt') }}
+                    </x-primary-button>
+                </div>
+            </form>
+        </div>
     </div>
 </x-app-layout>

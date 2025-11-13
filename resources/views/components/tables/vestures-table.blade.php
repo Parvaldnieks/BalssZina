@@ -18,7 +18,7 @@
                 return matchesSearch && formattedDate === this.selectedDate;
             });
         }
-    }" 
+    }"
     class="p-6"
 >
 
@@ -27,38 +27,38 @@
             type="text" 
             x-model="search"
             placeholder="Meklēt vēsturi..."
-            class="border border-gray-300 rounded px-3 py-2 mb-4 w-full focus:border-blue-500 focus:ring-blue-500"
+            class="rounded px-3 py-2 mb-4 w-full focus:border-orange-500 focus:ring-orange-500"
         >
 
         <input 
             type="date" 
             id="date" 
             x-model="selectedDate"
-            class="border border-gray-300 rounded px-3 py-2 mb-4 w-full focus:border-blue-500 focus:ring-blue-500"
+            class="rounded px-3 py-2 mb-4 w-full focus:border-orange-500 focus:ring-orange-500"
         />
     </div>
 
-    <table class="w-full border-collapse text-center">
+    <table class="w-full border-collapse text-center dark:text-white">
         <thead>
-            <tr>
-                <th class="border-b border-gray-200 py-2">{{ __('MP3 Fails') }}</th>
-                <th class="border-b border-gray-200 py-2">{{ __('Teksts') }}</th>
-                <th class="border-b border-gray-200 py-2">{{ __('Darbības') }}</th>
+            <tr class="border-b border-orange-500">
+                <th>{{ __('MP3 Fails') }}</th>
+                <th>{{ __('Teksts') }}</th>
+                <th>{{ __('Darbības') }}</th>
             </tr>
         </thead>
 
         <tbody>
             <template x-if="filtered.length === 0">
                 <tr>
-                    <td colspan="3" class="text-gray-500 italic text-center py-4">
+                    <td colspan="3" class="text-gray-500 text-center py-4">
                         Nekas netika atrasts.
                     </td>
                 </tr>
             </template>
 
             <template x-for="vesture in filtered" :key="vesture.id">
-                <tr>
-                    <td class="px-6 py-4 border-b border-gray-200">
+                <tr class="border-b border-orange-500 h-12">
+                    <td>
                         <template x-if="vesture.mp3_path">
                             <a 
                                 :href="`/vestures/${vesture.id}`" 
@@ -69,11 +69,11 @@
                         </template>
 
                         <template x-if="!vesture.mp3_path">
-                            <span class="text-gray-400 italic">Nav pievienots</span>
+                            <span class="text-gray-500">Nav pievienots</span>
                         </template>
                     </td>
                     
-                    <td class="px-6 py-4 border-b border-gray-200">
+                    <td>
                         <a 
                             :href="`/vestures/${vesture.id}/edit`"
                             class="text-yellow-500 hover:text-yellow-700 hover:underline"
@@ -81,7 +81,7 @@
                         ></a>
                     </td>
 
-                    <td class="px-6 py-4 border-b border-gray-200">
+                    <td>
                         <form :action="`/vestures/${vesture.id}`" method="POST" class="inline-block">
                             @csrf
                             @method('DELETE')
