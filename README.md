@@ -21,6 +21,7 @@ Parole - password
 
 Lai turpmākās darbības butu sekmīgas ir nepieciešami 2 API (ElevenLabs, OpenAI)
 abi ir par maksu un (API_KEYS) šeit nebūs norādītas, tāpēc zemāk rakstīto var ignorēt
+Kā arī izmantot - php artisan storage:link
 
 Lai "sinhronizētu" mp3 failus izmantot pogu, kas pieejama administratora kontam, sākuma skatā un tad termināli izpildīt šo komandu - 
 php artisan queue:work --queue=mp3-generation
