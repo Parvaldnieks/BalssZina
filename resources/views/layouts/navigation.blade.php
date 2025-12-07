@@ -58,6 +58,14 @@
                         </x-nav-link>
                     </div>
                 @endif
+
+                @if (auth()->user()->hasPermission('parvaldit_api'))
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link :href="route('api.requests')" :active="request()->routeIs('api-requests')">
+                            {{ t('api.requests.view.link', 'API') }}
+                        </x-nav-link>
+                    </div>
+                @endif
             </div>
 
             <!-- Settings Dropdown -->

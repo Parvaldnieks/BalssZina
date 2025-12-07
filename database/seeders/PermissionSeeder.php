@@ -17,6 +17,7 @@ class PermissionSeeder extends Seeder
             'skatit_pieturas',
             'izveidot_pieturas',
             'izveidot_valodas',
+            'parvaldit_api',
         ];
 
         foreach ($permissions as $permission) {

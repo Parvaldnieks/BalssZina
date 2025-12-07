@@ -8,6 +8,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VesturesController;
 use App\Http\Controllers\PieturasController;
 use App\Http\Controllers\TulkojumsController;
+use App\Http\Controllers\ApiAccessController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -67,5 +68,13 @@ Route::post('/valodas/maina', [ValodasController::class, 'switch'])->name('valod
 Route::get('valodas/{valoda}/tulkojums', [TulkojumsController::class, 'index'])->name('tulkojums.index');
 Route::get('valodas/{valoda}/tulkojums/{original}/edit', [TulkojumsController::class, 'edit'])->name('tulkojums.edit');
 Route::put('valodas/{valoda}/tulkojums/{original}', [TulkojumsController::class, 'update'])->name('tulkojums.update');
+
+// API
+Route::get('/api-requests', [ApiAccessController::class, 'index'])->name('api.requests')->middleware('permission:parvaldit_api');
+Route::post('/api/delete-key/{id}', [ApiAccessController::class, 'deleteKey'])->middleware(['permission:parvaldit_api'])->name('api.key.delete');
+Route::post('/api/block-device/{id}', [ApiAccessController::class, 'blockDevice'])->middleware(['permission:parvaldit_api'])->name('api.device.block');
+Route::post('/api/approve-access/{request}', [ApiAccessController::class, 'approveAccess'])->middleware('permission:parvaldit_api');
+Route::post('/api/deny-access/{request}', [ApiAccessController::class, 'denyAccess'])->middleware('permission:parvaldit_api');
+Route::post('/api/unblock-device/{id}', [ApiAccessController::class, 'unblockDevice'])->middleware(['permission:parvaldit_api'])->name('api.device.unblock');
 
 require __DIR__.'/auth.php';

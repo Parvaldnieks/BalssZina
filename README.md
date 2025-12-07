@@ -30,3 +30,10 @@ php artisan queue:work --queue=mp3-generation
 Lai "sinhronizētu" jaunu valodu vai esošu(ja ir jauni teksti, kas jātūlko), izmantot - php artisan queue:work --queue=text-translation
 
 Lai sagatavotu jaunus "localizācijas" failus izmantot - php artisan lang:prepare (un šeit jāraksta jaunās valodas kods tos var atrast internetā) un lai iztulkotu uz jauno valodu izmantot - php artisan lang:translate (tas pats valodas kods ko izmantoji sagatavošanā)
+
+Tagad ir pieejams ari API, bet pagaidām tikai lokāli - http://127.0.0.1:8000/api/get-pieturas?api_key=ģenerētā_atslēga
+
+Lai iegūtu atslēgu priekš API, bet (The GET method is not supported for route api/request-access. Supported methods: POST.) - http://127.0.0.1:8000/api/request-access
+
+Testēšanas nolūkos izmantot - php artisan tinker un šo kodu ievotot -
+use App\Models\ApiRequest;  ApiRequest::create([     'device_name' => 'Bus #24 Controller',     'requester_email' => null,     'status' => 'pending' ]);
