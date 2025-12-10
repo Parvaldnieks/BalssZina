@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ApiKey;
 use App\Models\Pieturas;
+use App\Models\PendingKey;
 use App\Models\ApiRequest;
 use Illuminate\Http\Request;
 use App\Http\Resources\PieturasResource;
@@ -12,12 +14,12 @@ class ApiAccessController extends Controller
     public function index()
     {
         $requests = ApiRequest::with('apiKey')->orderBy('created_at', 'desc')->get();
-        return view('api-piekluve.api-requests', compact('requests'));
+        return view('api-piekluve.requests', compact('requests'));
     }
 
     public function showForm()
     {
-        return view('api-piekluve.api-form');
+        return view('api-piekluve.form');
     }
 
     public function requestAccess(Request $request)
@@ -70,15 +72,32 @@ class ApiAccessController extends Controller
             $apiRequest->apiKey->delete();
         }
 
-        $key = bin2hex(random_bytes(16));
-        $apiRequest->apiKey()->create(['key' => $key]);
+        $newKey = bin2hex(random_bytes(16));
+        $apiRequest->apiKey()->create(['key' => $newKey]);
+
+        $expiresAt = now()->addDay();
+
+        PendingKey::updateOrCreate(
+            ['email' => $apiRequest->email],
+            [
+                'api_key' => $newKey,
+                'expires_at' => $expiresAt,
+                'copied' => false,
+            ]
+        );
+
         $apiRequest->update(['status' => 'approved']);
 
+        $pickupUrl = route('pickup.form');
+
         if ($request->wantsJson()) {
-            return response()->json(['message' => 'API key generated', 'api_key' => $key]);
+            return response()->json([
+                'message' => 'API key generated',
+                'api_key' => $newKey
+            ]);
         }
 
-        return redirect()->back()->with('success', 'API key generated: ' . $key);
+        return redirect()->back()->with('pickup_link', $pickupUrl);
     }
 
     public function denyAccess(Request $request, $id)
@@ -98,7 +117,7 @@ class ApiAccessController extends Controller
             return response()->json(['message' => 'Request denied']);
         }
 
-        return redirect()->back()->with('success', 'Request denied');
+        return redirect()->back();
     }
 
     public function deleteKey(Request $request, $id)
@@ -113,7 +132,7 @@ class ApiAccessController extends Controller
             return response()->json(['message' => 'API key deleted']);
         }
 
-        return redirect()->back()->with('success', 'API key deleted.');
+        return redirect()->back();
     }
 
     public function blockDevice(Request $request, $id)
@@ -128,7 +147,7 @@ class ApiAccessController extends Controller
             return response()->json(['message' => $msg]);
         }
 
-        return redirect()->back()->with('success', $msg);
+        return redirect()->back();
     }
 
     public function unblockDevice(Request $request, $id)
@@ -140,21 +159,35 @@ class ApiAccessController extends Controller
             return response()->json(['message' => 'Device unblocked']);
         }
 
-        return redirect()->back()->with('success', 'Device unblocked.');
+        return redirect()->back();
     }
 
     public function getPieturas(Request $request)
     {
         $keyValue = $request->header('X-API-KEY') ?? $request->query('api_key');
-        
-        $apiKey = \App\Models\ApiKey::with('request')->where('key', $keyValue)->first();
 
-        if (!$apiKey) {
+        $pending = PendingKey::where('api_key', $keyValue)->first();
+
+        if (!$pending) {
             return response()->json(['error' => 'Invalid or missing API key'], 401);
         }
 
-        if ($apiKey->request->blocked) {
-            return response()->json(['error' => 'Your access has been blocked'], 403);
+        if (!$pending->copied) {
+            return response()->json(['error' => 'API key not activated. Copy & confirm first.'], 403);
+        }
+
+        $apiRequest = ApiRequest::where('email', $pending->email)->first();
+
+        if (!$apiRequest || $apiRequest->blocked) {
+            return response()->json(['error' => 'Access blocked for this key.'], 403);
+        }
+
+        if ($apiRequest->status === 'denied') {
+            return response()->json(['error' => 'Your request was denied.'], 403);
+        }
+
+        if ($pending->expires_at && $pending->expires_at < now()) {
+            return response()->json(['error' => 'API key has expired.'], 403);
         }
 
         $pieturas = Pieturas::latest()->get();

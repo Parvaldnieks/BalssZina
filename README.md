@@ -34,3 +34,5 @@ Lai sagatavotu jaunus "localizācijas" failus izmantot - php artisan lang:prepar
 Tagad ir pieejams ari API - http://127.0.0.1:8000/api/get-pieturas?api_key=ģenerētā_atslēga
 
 Lai iegūtu atslēgu priekš API ir jāaizpilda dotie datu lauki, visi ir obligāti - http://127.0.0.1:8000/request-access
+
+Lai saņemtu un aktivizētu savu atslēgu - http://127.0.0.1:8000/pickup

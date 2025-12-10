@@ -1,7 +1,7 @@
 <style>
     body {
         font-family: Arial, sans-serif;
-        background-color: #f9f9f9;
+        background-color: #fff7f0;
         margin: 0;
         padding: 0;
     }
@@ -10,7 +10,7 @@
         text-align: center;
         margin-top: 2rem;
         font-size: 2rem;
-        color: #333;
+        color: #ff7a22;
     }
 
     form {
@@ -24,7 +24,7 @@
         padding: 2rem;
         background-color: white;
         border-radius: 0.5rem;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        box-shadow: 0 4px 10px rgba(255, 125, 42, 0.25);
     }
 
     form > div {
@@ -36,7 +36,7 @@
         display: block;
         margin-bottom: 0.5rem;
         font-weight: bold;
-        color: #555;
+        color: #d55800;
         text-align: left;
     }
 
@@ -44,14 +44,15 @@
         width: 100%;
         padding: 0.6rem;
         font-size: 1rem;
-        border: 1px solid #ccc;
+        border: 1px solid #ffb684;
         border-radius: 0.3rem;
         transition: border-color 0.2s, box-shadow 0.2s;
+        background-color: #fffdfa;
     }
 
     select:focus, input:focus, textarea:focus {
-        border-color: #4CAF50;
-        box-shadow: 0 0 4px rgba(76, 175, 80, 0.3);
+        border-color: #ff7a22;
+        box-shadow: 0 0 4px rgba(255, 122, 34, 0.4);
         outline: none;
     }
 
@@ -62,7 +63,7 @@
 
     button[type="submit"] {
         width: 100%;
-        background-color: #4CAF50;
+        background-color: #ff7a22;
         color: white;
         padding: 0.6rem 1.2rem;
         font-size: 1rem;
@@ -74,23 +75,45 @@
     }
 
     button[type="submit"]:hover {
-        background-color: #45a049;
+        background-color: #e96500;
     }
 
     .error {
-        color: red;
+        color: #d84200;
         font-size: 0.85rem;
         margin-top: 0.25rem;
     }
 
     .success {
-        background-color: #4CAF50;
+        background-color: #ff7a22; 
         color: white;
         padding: 0.75rem 1rem;
         border-radius: 0.3rem;
         text-align: center;
         margin: 1rem auto;
         max-width: 30rem;
+        box-shadow: 0 2px 8px rgba(255, 122, 34, 0.35);
+    }
+
+    .pickup-link {
+        margin-top: 1rem;
+        text-align: center;
+        font-size: 0.95rem;
+        color: #ff7a22;
+    }
+
+    .pickup-link a {
+        color: #ff5e00;
+        font-weight: bold;
+        text-decoration: none;
+        border-bottom: 2px solid #ff5e00;
+        padding-bottom: 2px;
+        transition: 0.2s;
+    }
+
+    .pickup-link a:hover {
+        color: #d84f00;
+        border-bottom-color: #d84f00;
     }
 </style>
 
@@ -155,4 +178,8 @@
     <div>
         <button type="submit">Submit Request</button>
     </div>
+    <p class="status-link">
+        To check status, go to - 
+        <a href="http://127.0.0.1:8000/pickup" target="_blank">Check Request Status</a>
+    </p>
 </form>
