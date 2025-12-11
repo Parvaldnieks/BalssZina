@@ -78,7 +78,7 @@ Route::get('/pickup', [PendingKeyController::class, 'pickupForm'])->name('pickup
 Route::post('/pickup/copy', [PendingKeyController::class, 'markCopied'])->name('pickup.copy');
 Route::get('/request-access', [ApiAccessController::class, 'showForm']);
 Route::post('/request-access', [ApiAccessController::class, 'requestAccess'])->name('request.access.submit');
-Route::get('/api-requests', [ApiAccessController::class, 'index'])->name('api.requests')->middleware('permission:parvaldit_api');
+Route::get('/api-requests', [ApiAccessController::class, 'index'])->middleware('permission:parvaldit_api')->name('api.requests');
 Route::post('/api/delete-key/{id}', [ApiAccessController::class, 'deleteKey'])->middleware(['permission:parvaldit_api'])->name('api.key.delete');
 Route::post('/api/block-device/{id}', [ApiAccessController::class, 'blockDevice'])->middleware(['permission:parvaldit_api'])->name('api.device.block');
 Route::post('/api/approve-access/{request}', [ApiAccessController::class, 'approveAccess'])->middleware('permission:parvaldit_api');

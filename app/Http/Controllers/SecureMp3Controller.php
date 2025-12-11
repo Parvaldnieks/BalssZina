@@ -13,6 +13,15 @@ class SecureMp3Controller extends Controller
     public function stream(Request $request, Vesture $vesture)
     {
         if (auth()->check()) {
+
+            if (auth()->user()->admin) {
+                return $this->serveFile($vesture);
+            }
+
+            if (!auth()->user()->hasPermission('skatit_pieturas')) {
+                abort(403, 'No permission to access MP3');
+            }
+
             return $this->serveFile($vesture);
         }
 
