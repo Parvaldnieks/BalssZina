@@ -36,19 +36,17 @@ public function pickupForm()
             return redirect()->back()->with('error', 'Request was denied!');
         }
 
-        $pending = PendingKey::where('email', $email)
-            ->where('expires_at', '>', now())
-            ->first();
+        $pending = PendingKey::where('email', $email)->first();
 
-        if (!$pending) {
-            return redirect()->back()->with('error', 'E-mail has no pending request found!');
+        if ($pending && !$pending->copied && $pending->expires_at && $pending->expires_at < now()) {
+            $pending->delete();
+            return redirect()->back()->with('error', 'Your API key expired before activation. Please request access again.');
         }
 
         if (!$pending->copied) {
             return redirect()->back()
                 ->with('pending_email', $email)
-                ->with('pending_key', $pending->api_key)
-                ->with('info', 'Your key is ready but not yet activated! Copy & confirm to activate!');
+                ->with('pending_key', $pending->api_key);
         }
 
         return redirect()->back()->with('success', 'Your API key is active and ready to use.');

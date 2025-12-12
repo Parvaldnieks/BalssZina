@@ -41,22 +41,10 @@ class SecureMp3Controller extends Controller
             abort(403, 'API key not activated. Copy & confirm in pickup form.');
         }
 
-        if ($pending->expires_at && $pending->expires_at < now()) {
-            abort(403, 'API key expired');
-        }
+        $request = ApiRequest::where('email', $pending->email)->first();
 
-        $requestRecord = ApiRequest::where('email', $pending->email)->first();
-
-        if (!$requestRecord) {
-            abort(403, 'API request not found. Key is invalid.');
-        }
-
-        if ($requestRecord->blocked) {
+        if ($request->blocked) {
             abort(403, 'API key blocked');
-        }
-
-        if ($requestRecord->status === 'denied') {
-            abort(403, 'API key denied');
         }
 
         return $this->serveFile($vesture);

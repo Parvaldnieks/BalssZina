@@ -5,9 +5,9 @@
         </h2>
     </x-slot>
 
-    <div 
-        x-data="{ 
-            search: '', 
+    <div
+        x-data="{
+            search: '',
             requests: {{ $requests->toJson() }},
             get filtered() {
                 if (this.search === '') return this.requests;
@@ -22,7 +22,7 @@
     >
 
         <div class="max-w-md mx-auto flex flex-col mt-4">
-            <input 
+            <input
                 type="text"
                 x-model="search"
                 placeholder="{{ t('api.search', 'Meklēt API pieprasījumus') }}..."
@@ -34,7 +34,7 @@
             <table class="min-w-full dark:text-white text-center border-collapse">
                 <thead>
                     <tr class="border-b border-orange-500">
-                        <th>{{ t('api.device.type', 'Ierīces Tips') }}</th>
+                        <th class="py-2">{{ t('api.device.type', 'Ierīces Tips') }}</th>
                         <th>{{ t('api.device.os', 'Operētāj Sistēma') }}</th>
                         <th>{{ t('api.email', 'E-pasts') }}</th>
                         <th>{{ t('api.status', 'Status') }}</th>
@@ -55,85 +55,111 @@
                     @foreach($requests as $request)
                         <template x-if="filtered.some(r => r.id === {{ $request->id }})">
                             <tr class="border-b border-orange-500">
-                                <td>{{ $request->device_type }}</td>
+
+                                <td class="py-2">{{ $request->device_type }}</td>
                                 <td>{{ $request->device_os }}</td>
                                 <td>{{ $request->email ?? '-' }}</td>
 
                                 <td>
                                     @if($request->status === 'pending')
-                                        <span class="bg-yellow-200 text-yellow-800 px-2 py-1 rounded">{{ t('api.pending', 'Gaida') }}</span>
+                                        <span class="bg-yellow-200 text-yellow-800 px-2 py-1 rounded">
+                                            {{ t('api.pending', 'Gaida') }}
+                                        </span>
                                     @elseif($request->status === 'approved')
-                                        <span class="bg-green-200 text-green-800 px-2 py-1 rounded">{{ t('api.approved', 'Atļauts') }}</span>
+                                        <span class="bg-green-200 text-green-800 px-2 py-1 rounded">
+                                            {{ t('api.approved', 'Atļauts') }}
+                                        </span>
                                     @else
-                                        <span class="bg-red-200 text-red-800 px-2 py-1 rounded">{{ t('api.denied', 'Aizliegts') }}</span>
+                                        <span class="bg-red-200 text-red-800 px-2 py-1 rounded">
+                                            {{ t('api.denied', 'Aizliegts') }}
+                                        </span>
                                     @endif
 
                                     @if($request->blocked)
-                                        <span class="bg-gray-700 text-white px-2 py-1 rounded ml-1">{{ t('api.blocked', 'Bloķēts') }}</span>
+                                        <span class="bg-gray-700 text-white px-2 py-1 rounded ml-1">
+                                            {{ t('api.blocked', 'Bloķēts') }}
+                                        </span>
                                     @endif
                                 </td>
+
 
                                 <td>
                                     @if($request->apiKey)
-                                        <code id="key-{{ $request->id }}">{{ $request->apiKey->key }}</code>
-                                        <button onclick="navigator.clipboard.writeText(document.getElementById('key-{{ $request->id }}').innerText)"
-                                                class="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded ml-1">
+                                        <code id="key-{{ $request->id }}">
+                                            {{ $request->apiKey->key }}
+                                        </code>
+                                        <button
+                                            onclick="navigator.clipboard.writeText(document.getElementById('key-{{ $request->id }}').innerText)"
+                                            class="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded ml-1"
+                                        >
                                             {{ t('api.copy', 'Kopēt') }}
                                         </button>
                                     @else
-                                        -
+                                        —
                                     @endif
                                 </td>
 
-                                <td>
-                                    @if($request->status === 'pending' && !$request->blocked)
+                                <td class="space-x-1">
+                                    @if(!$request->blocked)
                                         <form method="POST" action="{{ url('/api/approve-access/'.$request->id) }}" class="inline">
                                             @csrf
-                                            <button type="submit" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded">
-                                                {{ t('api.approve', 'Atļaut') }}
+                                            <button
+                                                type="submit"
+                                                class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded"
+                                            >
+                                                {{ $request->status === 'approved'
+                                                    ? t('api.regenerate', 'Ģenerēt')
+                                                    : t('api.approve', 'Atļaut') }}
                                             </button>
                                         </form>
+                                    @endif
+
+                                    @if(!$request->blocked && $request->status !== 'denied')
                                         <form method="POST" action="{{ url('/api/deny-access/'.$request->id) }}" class="inline">
                                             @csrf
-                                            <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded">
+                                            <button
+                                                type="submit"
+                                                class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
+                                            >
                                                 {{ t('api.deny', 'Aizliegt') }}
                                             </button>
                                         </form>
                                     @endif
 
-                                    @if($request->status === 'approved' && !$request->blocked)
-                                        @if($request->apiKey)
-                                            <form method="POST" action="{{ route('api.key.delete', $request->id) }}" class="inline">
-                                                @csrf
-                                                <button type="submit" class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded">
-                                                    {{ t('api.delete', 'Dzēst') }}
-                                                </button>
-                                            </form>
-                                        @else
-                                            <form method="POST" action="{{ url('/api/approve-access/'.$request->id) }}" class="inline">
-                                                @csrf
-                                                <button type="submit" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded">
-                                                    {{ t('api.generate', 'Ģenerēt') }}
-                                                </button>
-                                            </form>
-                                        @endif
+                                    @if($request->status === 'approved' && $request->apiKey)
+                                        <form method="POST" action="{{ route('api.key.delete', $request->id) }}" class="inline">
+                                            @csrf
+                                            <button
+                                                type="submit"
+                                                class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded"
+                                            >
+                                                {{ t('api.delete', 'Dzēst atslēgu') }}
+                                            </button>
+                                        </form>
                                     @endif
 
                                     @if(!$request->blocked)
                                         <form method="POST" action="{{ route('api.device.block', $request->id) }}" class="inline">
                                             @csrf
-                                            <button type="submit" class="bg-red-700 hover:bg-red-800 text-white px-3 py-1 rounded">
+                                            <button
+                                                type="submit"
+                                                class="bg-red-700 hover:bg-red-800 text-white px-3 py-1 rounded"
+                                            >
                                                 {{ t('api.block', 'Bloķēt') }}
                                             </button>
                                         </form>
                                     @else
                                         <form method="POST" action="{{ route('api.device.unblock', $request->id) }}" class="inline">
                                             @csrf
-                                            <button type="submit" class="bg-green-700 hover:bg-green-800 text-white px-3 py-1 rounded">
+                                            <button
+                                                type="submit"
+                                                class="bg-green-700 hover:bg-green-800 text-white px-3 py-1 rounded"
+                                            >
                                                 {{ t('api.unblock', 'Atbloķēt') }}
                                             </button>
                                         </form>
                                     @endif
+
                                 </td>
                             </tr>
                         </template>

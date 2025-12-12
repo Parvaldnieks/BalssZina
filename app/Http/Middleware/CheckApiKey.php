@@ -22,13 +22,13 @@ class CheckApiKey
         $apiKey = $headerKey ?? $queryKey;
 
         if (!$apiKey) {
-            return response()->json(['error' => 'API key missing'], 401);
+            return response()->json(['error' => 'API key missing']);
         }
 
         $key = ApiKey::where('key', $apiKey)->first();
 
         if (!$key) {
-            return response()->json(['error' => 'Invalid API key'], 401);
+            return response()->json(['error' => 'Invalid API key']);
         }
 
         return $next($request);
